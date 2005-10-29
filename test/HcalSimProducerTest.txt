@@ -1,0 +1,73 @@
+
+process PROD  = 
+{
+
+  source = PoolSource {
+    untracked string fileName = 'CaloTowers_HB_HO.root'
+    untracked int32 maxEvents = 10
+  }
+
+  module hcalSim = HcalDigiProducer
+  {
+  }
+
+  module dumper = HcalDigiDump {
+  }
+
+  es_source = EmptyESSource {
+    string recordName = "IdealGeometryRecord"
+    vuint32 firstValid = { 1 }
+    bool iovIsRunNotTime = true
+  }
+
+  es_module = HcalHardcodeGeometryEP {}
+  es_module = CaloTowerHardcodeGeometryEP {}
+  es_module = CaloGeometryBuilder {}
+
+  es_module = HcalDbProducer {untracked string dbSource = "hardcode"}
+
+  es_source es_0 = HcalDbSource {}
+
+  es_source es_1 = EmptyESSource {
+    untracked string recordName = "HcalPedestalsRcd"
+    untracked bool iovIsRunNotTime = true
+    untracked vuint32 firstValid = {1,2,3}
+  }
+ 
+  es_source es_2 = EmptyESSource {
+    untracked string recordName = "HcalPedestalWidthsRcd"
+    untracked bool iovIsRunNotTime = true
+    untracked vuint32 firstValid = {1,2,3}
+  }
+
+  es_source es_3 = EmptyESSource {
+    untracked string recordName = "HcalGainsRcd"
+    untracked bool iovIsRunNotTime = true
+    untracked vuint32 firstValid = {1,2,3}
+  }
+
+  es_source es_4 = EmptyESSource {
+    untracked string recordName = "HcalGainWidthsRcd"
+    untracked bool iovIsRunNotTime = true
+    untracked vuint32 firstValid = {1,2,3}
+  }
+
+  module hcalCalib = EventSetupRecordDataGetter { 
+    VPSet toGet = {
+     {
+        string record = "HcalDbRecord"
+        vstring data = { "HcalDbService"}
+     }
+    }
+    untracked bool verbose = true
+  }
+
+  module writer = PoolOutputModule
+  {
+    untracked string fileName = "myfile_z.root"
+    untracked int32 maxEvents = 91624
+  }
+
+  path p = { hcalSim, writer }
+}
+
