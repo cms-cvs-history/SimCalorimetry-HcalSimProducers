@@ -2,10 +2,37 @@
 process PROD  = 
 {
 
-  source = PoolSource {
-    untracked string fileName = 'CaloTowers_HB_HO.root'
-    untracked int32 maxEvents = 10
-  }
+// source = PoolSource {
+//     untracked string fileName = 'simevent.root'
+//     untracked int32 maxEvents = -1
+//     untracked uint32 debugVebosity = 10
+//     untracked bool   debugFlag     = true
+//  }
+
+
+  
+  es_source = XMLIdealGeometryESSource
+   {
+      FileInPath GeometryConfiguration="Geometry/CSCSimAlgo/test/testGeoCo.xml"
+      string rootNodeName = ""
+   }
+
+
+  es_module = HcalHardcodeGeometryEP {}
+  es_module = CaloTowerHardcodeGeometryEP {}
+  es_module = CaloGeometryBuilder {}
+  es_module = EcalBarrelGeometryEP {}
+
+  es_module = HcalDbProducer {}
+
+  es_source es_hardcode = HcalHardcodeCalibrations {untracked vstring toGet = {"Pedestals", "PedestalWidths", "Gains", "GainWidths"}}
+
+       source = EmptySource {untracked int32 maxEvents = 1
+                              untracked uint32 firstRun = 1
+                              untracked uint32 numberEventsInRun = 1
+                                   }
+
+module HcalDbAnalyzer = HcalDbAnalyzer {}
 
   module hcalSim = HcalDigiProducer
   {
@@ -14,60 +41,14 @@ process PROD  =
   module dumper = HcalDigiDump {
   }
 
-  es_source = EmptyESSource {
-    string recordName = "IdealGeometryRecord"
-    vuint32 firstValid = { 1 }
-    bool iovIsRunNotTime = true
-  }
 
-  es_module = HcalHardcodeGeometryEP {}
-  es_module = CaloTowerHardcodeGeometryEP {}
-  es_module = CaloGeometryBuilder {}
 
-  es_module = HcalDbProducer {untracked string dbSource = "hardcode"}
+///  module writer = PoolOutputModule
+//  {
+//    untracked string fileName = "myfile_z.root"
+///    untracked int32 maxEvents = 91624
+//  }
 
-  es_source es_0 = HcalDbSource {}
-
-  es_source es_1 = EmptyESSource {
-    untracked string recordName = "HcalPedestalsRcd"
-    untracked bool iovIsRunNotTime = true
-    untracked vuint32 firstValid = {1,2,3}
-  }
- 
-  es_source es_2 = EmptyESSource {
-    untracked string recordName = "HcalPedestalWidthsRcd"
-    untracked bool iovIsRunNotTime = true
-    untracked vuint32 firstValid = {1,2,3}
-  }
-
-  es_source es_3 = EmptyESSource {
-    untracked string recordName = "HcalGainsRcd"
-    untracked bool iovIsRunNotTime = true
-    untracked vuint32 firstValid = {1,2,3}
-  }
-
-  es_source es_4 = EmptyESSource {
-    untracked string recordName = "HcalGainWidthsRcd"
-    untracked bool iovIsRunNotTime = true
-    untracked vuint32 firstValid = {1,2,3}
-  }
-
-  module hcalCalib = EventSetupRecordDataGetter { 
-    VPSet toGet = {
-     {
-        string record = "HcalDbRecord"
-        vstring data = { "HcalDbService"}
-     }
-    }
-    untracked bool verbose = true
-  }
-
-  module writer = PoolOutputModule
-  {
-    untracked string fileName = "myfile_z.root"
-    untracked int32 maxEvents = 91624
-  }
-
-  path p = { hcalSim, writer }
+  path p = { HcalDbAnalyzer}
 }
 
