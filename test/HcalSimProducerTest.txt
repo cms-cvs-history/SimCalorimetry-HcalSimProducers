@@ -1,16 +1,9 @@
+# Configuration file for EventSetupTest_t
 
-process PROD  = 
-{
+process TEST = {
 
-// source = PoolSource {
-//     untracked string fileName = 'simevent.root'
-//     untracked int32 maxEvents = -1
-//     untracked uint32 debugVebosity = 10
-//     untracked bool   debugFlag     = true
-//  }
+  path p = { hcalSim & dumper}
 
-
-  
   es_source = XMLIdealGeometryESSource
    {
       FileInPath GeometryConfiguration="Geometry/CSCSimAlgo/test/testGeoCo.xml"
@@ -23,32 +16,26 @@ process PROD  =
   es_module = CaloGeometryBuilder {}
   es_module = EcalBarrelGeometryEP {}
 
+
+  module print = AsciiOutputModule { }
+	
+  module HcalDbAnalyzer = HcalDbAnalyzer {}
+
+  module hcalSim = HcalDigiProducer {}
+
+  module dumper = HcalDigiDump {}
+
+
+	
   es_module = HcalDbProducer {}
 
-  es_source es_hardcode = HcalHardcodeCalibrations {untracked vstring toGet = {"Pedestals", "PedestalWidths", "Gains", "GainWidths"}}
+  es_source es_hardcode = HcalHardcodeCalibrations {untracked vstring toGet = {"Pedestals", "PedestalWidths", "Gains", "GainWidths", "QIEShape", "QIEData", "ChannelQuality", "ElectronicsMap"}}
 
-       source = EmptySource {untracked int32 maxEvents = 1
-                              untracked uint32 firstRun = 1
-                              untracked uint32 numberEventsInRun = 1
-                                   }
 
-module HcalDbAnalyzer = HcalDbAnalyzer {}
-
-  module hcalSim = HcalDigiProducer
-  {
+  source = EmptySource {
+    untracked int32 maxEvents = 1
+    untracked uint32 firstRun = 1 
+    untracked uint32 numberEventsInRun = 1 
   }
 
-  module dumper = HcalDigiDump {
-  }
-
-
-
-///  module writer = PoolOutputModule
-//  {
-//    untracked string fileName = "myfile_z.root"
-///    untracked int32 maxEvents = 91624
-//  }
-
-  path p = { HcalDbAnalyzer}
 }
-
