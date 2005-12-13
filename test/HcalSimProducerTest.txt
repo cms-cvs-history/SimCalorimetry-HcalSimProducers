@@ -2,7 +2,7 @@
 
 process TEST = {
 
-  path p = { hcalSim & dumper}
+  path p = { hcalSim & hcalTrigPrim }
 
   es_source = XMLIdealGeometryESSource
    {
@@ -23,6 +23,7 @@ process TEST = {
 
   module hcalSim = HcalDigiProducer {}
 
+  module hcalTrigPrim = HcalTrigPrimRecHitProducer {}
   module dumper = HcalDigiDump {}
 
 
