@@ -6,7 +6,7 @@ process TEST = {
 
   es_source = XMLIdealGeometryESSource
    {
-      FileInPath GeometryConfiguration="Geometry/CSCSimAlgo/test/testGeoCo.xml"
+      FileInPath GeometryConfiguration="Geometry/CaloEventSetup/test/TESTconfiguration.xml"
       string rootNodeName = ""
    }
 
