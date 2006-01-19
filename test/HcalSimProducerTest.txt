@@ -2,12 +2,25 @@
 
 process TEST = {
 
-  path p = { hcalSim & hcalTrigPrim }
+  path p = { mix, hcalSim, hcalTrigPrim }
 
   es_source = XMLIdealGeometryESSource
    {
       FileInPath GeometryConfiguration="Geometry/CaloEventSetup/test/TESTconfiguration.xml"
       string rootNodeName = ""
+   }
+
+   module mix = MixingModule {
+     secsource input = PoolSecondarySource  {
+       string fileName = "simevent.root"
+         bool random = true
+         bool no_reuse = true
+      }
+      string type = "fixed"
+      double average_number = 0
+      int32 minbunch =-1
+      int32 maxbunch =2
+      int32 bunchspace =25
    }
 
 
