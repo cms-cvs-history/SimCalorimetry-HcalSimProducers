@@ -2,7 +2,7 @@
 
 process TEST = {
 
-  path p = { mix, hcalSim, hcalTrigPrim }
+  path p = { mix, hcalSim, hcalTrigPrim, ecalSim , hcalDumper}
 
   es_source = XMLIdealGeometryESSource
    {
@@ -10,19 +10,17 @@ process TEST = {
       string rootNodeName = ""
    }
 
-   module mix = MixingModule {
-     secsource input = PoolSecondarySource  {
-       string fileName = "simevent.root"
-         bool random = true
-         bool no_reuse = true
-      }
-      string type = "fixed"
-      double average_number = 0
-      int32 minbunch =-1
-      int32 maxbunch =2
-      int32 bunchspace =25
-   }
-
+        module mix = MixingModule {
+               secsource input = PoolRASource  {
+                               vstring fileNames = {'/afs/cern.ch/user/u/uberthon/public/CMSSW_0_4_0_pre2/src/SimGeneral/MixingModule/test/data/simevent.root'}
+                               string type = "poisson"
+                               double averageNumber = 0
+                               int32 minBunch = xxx
+                               int32 maxBunch = xxx
+                               int32 seed = 1234567
+               }
+               int32 bunchspace = 25
+        }
 
   es_module = HcalHardcodeGeometryEP {}
   es_module = CaloTowerHardcodeGeometryEP {}
@@ -34,10 +32,18 @@ process TEST = {
 	
   module HcalDbAnalyzer = HcalDbAnalyzer {}
 
-  module hcalSim = HcalDigiProducer {}
+  module ecalSim = EcalDigiProducer {
+    untracked bool doNoise = false
+  }
+
+  module hcalSim = HcalDigiProducer {
+    untracked bool doNoise = false
+  }
 
   module hcalTrigPrim = HcalTrigPrimRecHitProducer {}
-  module dumper = HcalDigiDump {}
+  module hcalDumper = HcalDigiDump {}
+  module ecalDumper = EcalDigiDumperModule {}
+
 
 
 	
