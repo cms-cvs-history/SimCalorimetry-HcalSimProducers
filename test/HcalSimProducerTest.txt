@@ -2,7 +2,7 @@
 
 process TEST = {
 
-  path p = { mix, hcalSim, hcalTrigPrim, ecalSim , hcalDumper}
+  path p = { mix, hcalSim, hcalTrigPrim, ecalSim }
 
   es_source = XMLIdealGeometryESSource
    {
@@ -12,12 +12,13 @@ process TEST = {
 
         module mix = MixingModule {
                secsource input = PoolRASource  {
-                               vstring fileNames = {'/afs/cern.ch/user/u/uberthon/public/CMSSW_0_4_0_pre2/src/SimGeneral/MixingModule/test/data/simevent.root'}
-                               string type = "poisson"
+                                vstring fileNames = {"pi100.root"}
+                               string type = "none"
                                double averageNumber = 0
                                int32 minBunch = xxx
                                int32 maxBunch = xxx
                                int32 seed = 1234567
+
                }
                int32 bunchspace = 25
         }
@@ -37,7 +38,8 @@ process TEST = {
   }
 
   module hcalSim = HcalDigiProducer {
-    untracked bool doNoise = false
+    bool doTimeSlew = true
+    bool doNoise = true
   }
 
   module hcalTrigPrim = HcalTrigPrimRecHitProducer {}
@@ -59,7 +61,7 @@ process TEST = {
 //  }
 
   source = PoolSource {
-     untracked string fileName = 'simevent.root'
+     untracked string fileName = 'pi100.root'
      untracked int32 maxEvents = -1
      untracked uint32 debugVebosity = 10
      untracked bool   debugFlag     = true
