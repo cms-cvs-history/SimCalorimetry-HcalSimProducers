@@ -12,7 +12,7 @@ process TEST = {
 
         module mix = MixingModule {
                secsource input = PoolRASource  {
-                                vstring fileNames = {"pi100.root"}
+                               untracked  vstring fileNames = {"pi100.root"}
                                string type = "none"
                                double averageNumber = 0
                                int32 minBunch = xxx
@@ -27,6 +27,7 @@ process TEST = {
   es_module = CaloTowerHardcodeGeometryEP {}
   es_module = CaloGeometryBuilder {}
   es_module = EcalBarrelGeometryEP {}
+  es_module = EcalEndcapGeometryEP {}
 
 
   module print = AsciiOutputModule { }
@@ -51,7 +52,7 @@ process TEST = {
 	
   es_module = HcalDbProducer {}
 
-  es_source es_hardcode = HcalHardcodeCalibrations {untracked vstring toGet = {"Pedestals", "PedestalWidths", "Gains", "GainWidths", "QIEShape", "QIEData", "ChannelQuality", "ElectronicsMap"}}
+  es_source es_hardcode = HcalHardcodeCalibrations {vstring toGet = {"Pedestals", "PedestalWidths", "Gains", "GainWidths", "QIEShape", "QIEData", "ChannelQuality", "ElectronicsMap"}}
 
 
 //  source = EmptySource {
