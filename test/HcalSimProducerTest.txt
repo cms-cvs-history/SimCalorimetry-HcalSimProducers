@@ -2,7 +2,7 @@
 
 process TEST = {
 
-  path p = { mix, hcalSim, hcalTrigPrim, ecalSim }
+  path p = { mix, hcalDigitizer, hcalTrigPrim, ecalSim }
 
   es_source = XMLIdealGeometryESSource
    {
@@ -38,11 +38,7 @@ process TEST = {
     untracked bool doNoise = false
   }
 
-  module hcalSim = HcalDigiProducer {
-    bool doTimeSlew = true
-    bool doNoise = true
-  }
-
+  include "SimCalorimetry/HcalSimProducers/data/hcalDigitizer.cfi"
   module hcalTrigPrim = HcalTrigPrimRecHitProducer {}
   module hcalDumper = HcalDigiDump {}
   module ecalDumper = EcalDigiDumperModule {}
