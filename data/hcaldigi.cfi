@@ -1,0 +1,6 @@
+module hcaldigi = HcalDigiProducer 
+{
+  bool doTimeSlew = true
+  bool doNoise = true
+}
+
