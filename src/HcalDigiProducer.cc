@@ -83,7 +83,7 @@ void HcalDigiProducer::produce(edm::Event& e, const edm::EventSetup& eventSetup)
   theHFHits.clear();
   // Step A: Get Inputs
   edm::Handle<edm::PCaloHitContainer> hcalHits;
-  e.getByLabel("r", "HcalHits", hcalHits);
+  e.getByLabel("SimG4Object", "HcalHits", hcalHits);
   sortHits(*hcalHits);
 
   // Get input
