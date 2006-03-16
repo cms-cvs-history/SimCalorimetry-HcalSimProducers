@@ -38,24 +38,12 @@ process TEST = {
     untracked bool doNoise = false
   }
 
-  include "SimCalorimetry/HcalSimProducers/data/hcalDigitizer.cfi"
+  include "CalibCalorimetry/HcalPlugins/data/hardwired_conditions.cfi"
+  include "SimCalorimetry/HcalSimProducers/data/hcaldigi.cfi"
+
   module hcalTrigPrim = HcalTrigPrimRecHitProducer {}
   module hcalDumper = HcalDigiDump {}
   module ecalDumper = EcalDigiDumperModule {}
-
-
-
-	
-  es_module = HcalDbProducer {}
-
-  es_source es_hardcode = HcalHardcodeCalibrations {vstring toGet = {"Pedestals", "PedestalWidths", "Gains", "GainWidths", "QIEShape", "QIEData", "ChannelQuality", "ElectronicsMap"}}
-
-
-//  source = EmptySource {
-//    untracked int32 maxEvents = 1
-//    untracked uint32 firstRun = 1 
-//    untracked uint32 numberEventsInRun = 1 
-//  }
 
   source = PoolSource {
      untracked string fileName = 'pi100.root'
