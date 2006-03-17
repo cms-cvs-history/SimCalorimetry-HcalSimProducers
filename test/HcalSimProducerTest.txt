@@ -2,7 +2,7 @@
 
 process TEST = {
 
-  path p = { mix, hcalDigitizer, hcalTrigPrim, ecalSim }
+  path p = { mix, hcaldigi, hcalTrigPrim }
 
   es_source = XMLIdealGeometryESSource
    {
@@ -12,7 +12,7 @@ process TEST = {
 
         module mix = MixingModule {
                secsource input = PoolRASource  {
-                               untracked  vstring fileNames = {"pi100.root"}
+                               untracked  vstring fileNames = {"file:pi100.root"}
                                string type = "none"
                                double averageNumber = 0
                                int32 minBunch = xxx
@@ -34,19 +34,15 @@ process TEST = {
 	
   module HcalDbAnalyzer = HcalDbAnalyzer {}
 
-  module ecalSim = EcalDigiProducer {
-    untracked bool doNoise = false
-  }
 
   include "CalibCalorimetry/HcalPlugins/data/hardwired_conditions.cfi"
   include "SimCalorimetry/HcalSimProducers/data/hcaldigi.cfi"
 
   module hcalTrigPrim = HcalTrigPrimRecHitProducer {}
   module hcalDumper = HcalDigiDump {}
-  module ecalDumper = EcalDigiDumperModule {}
 
   source = PoolSource {
-     untracked string fileName = 'pi100.root'
+     untracked vstring fileNames = {"file:pi100.root"}
      untracked int32 maxEvents = -1
      untracked uint32 debugVebosity = 10
      untracked bool   debugFlag     = true
