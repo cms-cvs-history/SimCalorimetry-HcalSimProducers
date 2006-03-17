@@ -4,11 +4,7 @@ process TEST = {
 
   path p = { mix, hcaldigi, hcalTrigPrim }
 
-  es_source = XMLIdealGeometryESSource
-   {
-      FileInPath GeometryConfiguration="Geometry/CaloEventSetup/test/TESTconfiguration.xml"
-      string rootNodeName = ""
-   }
+  include "Geometry/CMSCommonData/data/cmsIdealGeometryXML.cfi"
 
         module mix = MixingModule {
                secsource input = PoolRASource  {
