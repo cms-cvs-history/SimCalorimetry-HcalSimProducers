@@ -4,5 +4,5 @@ module hcalTriggerPrimitiveDigis = HcalTrigPrimDigiProducer {
 // Jet path scale in MeV (needed to seed the transcoder)
   int32 jetScaleMeV = 1000
 // Input digi label (_must_ be without zero-suppression!)
-  string inputLabel = 'hcalDigis'
+  InputTag inputLabel = 'hcalDigis'
 }
