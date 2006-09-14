@@ -1,8 +1,7 @@
 module hcalTriggerPrimitiveDigis = HcalTrigPrimDigiProducer {
-// E/Gamma path scale in MeV (needed to seed the transcoder)
-  int32 egammaScaleMeV = 500
-// Jet path scale in MeV (needed to seed the transcoder)
-  int32 jetScaleMeV = 1000
+  int32 latency = 1
+  vdouble weights = { -1, -1, 1, 1}
+  double peakFilter = false
 // Input digi label (_must_ be without zero-suppression!)
   InputTag inputLabel = 'hcalDigis'
 }
