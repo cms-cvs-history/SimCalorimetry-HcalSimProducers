@@ -1,7 +1,7 @@
 module hcalTriggerPrimitiveDigis = HcalTrigPrimDigiProducer {
   int32 latency = 1
   vdouble weights = { -1, -1, 1, 1}
-  double peakFilter = false
+  bool peakFilter = false
 // Input digi label (_must_ be without zero-suppression!)
-  InputTag inputLabel = 'hcalDigis'
+  InputTag inputLabel = hcalDigis
 }
