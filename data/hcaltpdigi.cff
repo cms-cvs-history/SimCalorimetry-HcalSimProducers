@@ -1,0 +1,9 @@
+
+ include "SimCalorimetry/HcalSimProducers/data/hcaltpdigi.cfi"		
+
+ es_source = HcalTPGCoderULUT {
+        FileInPath filename='CalibFormats/HcalObjects/data/inputLUTcoder.dat'
+  }
+  es_source = CaloTPGTranscoderULUTs {
+        FileInPath hcalLUT='CalibFormats/CaloTPG/data/outputLUTtranscoder.dat'
+  }
