@@ -5,5 +5,5 @@
         FileInPath filename='CalibCalorimetry/HcalTPGAlgos/data/inputLUTcoder.dat'
   }
   es_source = CaloTPGTranscoderULUTs {
-        FileInPath hcalLUT='/CalibCalorimetry/CaloTPG/data/outputLUTtranscoder.dat'
+        FileInPath hcalLUT='CalibCalorimetry/CaloTPG/data/outputLUTtranscoder.dat'
   }
