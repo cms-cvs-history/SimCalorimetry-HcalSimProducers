@@ -2,5 +2,68 @@ module hcalDigis = HcalDigiProducer
 {
   bool doTimeSlew = true
   bool doNoise = true
+
+  PSet hb = {
+    double simHitToPhotoelectrons = 2000.
+    double photoelectronsToAnalog = 0.3305
+    double timePhase = 5
+    int32 readoutFrameSize = 10
+    int32 binOfMaximum = 6
+    bool doPhotoStatistics = true
+    bool syncPhase = true
+  }
+
+  PSet he = {
+    double simHitToPhotoelectrons = 2000.
+    double photoelectronsToAnalog = 0.3305
+    double timePhase = 5
+    int32 readoutFrameSize = 10
+    int32 binOfMaximum = 6
+    bool doPhotoStatistics = true
+    bool syncPhase = true
+  }
+
+  PSet ho = {
+    double simHitToPhotoelectrons = 4000.
+    double photoelectronsToAnalog =0.3065
+    double timePhase = 5
+    int32 readoutFrameSize = 10
+    int32 binOfMaximum = 6
+    bool doPhotoStatistics = true
+    bool syncPhase = true
+  }
+
+  PSet hf1 = {
+    double simHitToPhotoelectrons = 1
+    double photoelectronsToAnalog = 18.93
+    double timePhase = -4
+    int32 readoutFrameSize = 6
+    int32 binOfMaximum = 4
+    bool doPhotoStatistics = false
+    bool syncPhase = true
+  }
+
+  PSet hf2 = {
+    double simHitToPhotoelectrons = 1
+    double photoelectronsToAnalog =13.93
+    double timePhase = -4
+    int32 readoutFrameSize = 6
+    int32 binOfMaximum = 4
+    bool doPhotoStatistics = false
+    bool syncPhase = true
+  }
+
+  vdouble samplingFactors = {
+      120.49, 120.49, 120.49, 120.58, 120.67,
+      120.76, 120.87, 120.98, 121.08, 121.44,
+      121.81, 122.17, 123.37, 124.57, 125.76,
+      151.05, 189.25, 174.51, 174.51, 174.51,
+      174.51, 174.51, 174.51, 174.51, 174.51,
+      174.51, 174.51, 174.51, 174.51
+  }
+
+  double samplingFactorHF1 = 2.84
+  double samplingFactorHF2 = 2.09
+
 }
 
