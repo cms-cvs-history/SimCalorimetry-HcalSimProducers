@@ -11,6 +11,14 @@ module hcalDigis = HcalDigiProducer
     int32 binOfMaximum = 6
     bool doPhotoStatistics = true
     bool syncPhase = true
+    int32 firstRing = 1
+    vdouble samplingFactors = {
+      120.49, 120.49, 120.49, 120.58, 120.67,
+      120.76, 120.87, 120.98, 121.08, 121.44,
+      121.81, 122.17, 123.37, 124.57, 125.76,
+      130. 
+    }
+
   }
 
   PSet he = {
@@ -21,6 +29,12 @@ module hcalDigis = HcalDigiProducer
     int32 binOfMaximum = 6
     bool doPhotoStatistics = true
     bool syncPhase = true
+    int32 firstRing = 16
+    vdouble samplingFactors = {
+      151.05, 189.25, 174.51, 174.51, 174.51,
+      174.51, 174.51, 174.51, 174.51, 174.51,
+      174.51, 174.51, 174.51, 174.51
+    }
   }
 
   PSet ho = {
@@ -31,11 +45,18 @@ module hcalDigis = HcalDigiProducer
     int32 binOfMaximum = 6
     bool doPhotoStatistics = true
     bool syncPhase = true
+    int32 firstRing = 1
+    vdouble samplingFactors = {
+      217., 217., 217., 217., 217.,
+      217., 217., 217., 217., 217.,
+      217., 217., 217., 217., 217.,
+      217.
+    }
   }
 
   PSet hf1 = {
     double simHitToPhotoelectrons = 1
-    double photoelectronsToAnalog = 18.93
+    double photoelectronsToAnalog = 5.917
     double timePhase = -4
     int32 readoutFrameSize = 6
     int32 binOfMaximum = 4
@@ -45,25 +66,13 @@ module hcalDigis = HcalDigiProducer
 
   PSet hf2 = {
     double simHitToPhotoelectrons = 1
-    double photoelectronsToAnalog =13.93
+    double photoelectronsToAnalog = 4.354
     double timePhase = -4
     int32 readoutFrameSize = 6
     int32 binOfMaximum = 4
     bool doPhotoStatistics = false
     bool syncPhase = true
   }
-
-  vdouble samplingFactors = {
-      120.49, 120.49, 120.49, 120.58, 120.67,
-      120.76, 120.87, 120.98, 121.08, 121.44,
-      121.81, 122.17, 123.37, 124.57, 125.76,
-      151.05, 189.25, 174.51, 174.51, 174.51,
-      174.51, 174.51, 174.51, 174.51, 174.51,
-      174.51, 174.51, 174.51, 174.51
-  }
-
-  double samplingFactorHF1 = 2.84
-  double samplingFactorHF2 = 2.09
 
 }
 
