@@ -54,6 +54,7 @@ module hcalDigis = HcalDigiProducer
     }
   }
 
+/*
   PSet hf1 = {
     double simHitToPhotoelectrons = 1
     double photoelectronsToAnalog = 16.75
@@ -71,6 +72,36 @@ module hcalDigis = HcalDigiProducer
     int32 readoutFrameSize = 6
     int32 binOfMaximum = 4
     bool doPhotoStatistics = false
+    bool syncPhase = true
+  }
+*/
+  /* In HF, the SimHits energy is actually
+     the number of photoelectrons from the shower
+     library.  However, we need a lot more
+     smearing, because the first level of the PMT
+     only gives ~6 electrons per pe, which
+     comes out to a 40% smearing of the single pe peak!
+  */
+   
+  PSet  hf1 = {
+    double simHitToPhotoelectrons = 6
+    // 16.75/6
+    double photoelectronsToAnalog = 2.79
+    double timePhase = -4
+    int32 readoutFrameSize = 6
+    int32 binOfMaximum = 4
+    bool doPhotoStatistics = true
+    bool syncPhase = true
+  }
+
+  PSet hf2 = {
+    double simHitToPhotoelectrons = 6
+    // 11.06 / 6
+    double photoelectronsToAnalog = 1.843
+    double timePhase = -4
+    int32 readoutFrameSize = 6
+    int32 binOfMaximum = 4
+    bool doPhotoStatistics = true
     bool syncPhase = true
   }
 
