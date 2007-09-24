@@ -1,4 +1,4 @@
-module hcalDigis = HcalDigiProducer 
+module hcalUnsuppressedDigis = HcalDigiProducer 
 {
   bool doTimeSlew = true
   bool doNoise = true
