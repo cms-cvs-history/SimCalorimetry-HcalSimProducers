@@ -53,27 +53,6 @@ module hcalUnsuppressedDigis = HcalDigiProducer
     }
   }
 
-/*
-  PSet hf1 = {
-    double simHitToPhotoelectrons = 1
-    double photoelectronsToAnalog = 16.75
-    double timePhase = -4
-    int32 readoutFrameSize = 6
-    int32 binOfMaximum = 4
-    bool doPhotoStatistics = false
-    bool syncPhase = true
-  }
-
-  PSet hf2 = {
-    double simHitToPhotoelectrons = 1
-    double photoelectronsToAnalog = 11.06
-    double timePhase = -4
-    int32 readoutFrameSize = 6
-    int32 binOfMaximum = 4
-    bool doPhotoStatistics = false
-    bool syncPhase = true
-  }
-*/
   /* In HF, the SimHits energy is actually
      the number of photoelectrons from the shower
      library.  However, we need a lot more
@@ -84,9 +63,10 @@ module hcalUnsuppressedDigis = HcalDigiProducer
    
   PSet  hf1 = {
     double simHitToPhotoelectrons = 6
-    // 16.75/6
+    // 16.75/6, but not used
     double photoelectronsToAnalog = 2.79
     double timePhase = -4
+    double samplingFactor = 0.278  // pe/GeV
     int32 readoutFrameSize = 6
     int32 binOfMaximum = 4
     bool doPhotoStatistics = true
@@ -95,9 +75,10 @@ module hcalUnsuppressedDigis = HcalDigiProducer
 
   PSet hf2 = {
     double simHitToPhotoelectrons = 6
-    // 11.06 / 6
+    // 11.06 / 6, but not used
     double photoelectronsToAnalog = 1.843
     double timePhase = -4
+    double samplingFactor = 0.267 // pe/GeV
     int32 readoutFrameSize = 6
     int32 binOfMaximum = 4
     bool doPhotoStatistics = true
