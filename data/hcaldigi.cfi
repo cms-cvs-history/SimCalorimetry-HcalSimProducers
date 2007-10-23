@@ -1,4 +1,4 @@
-module hcalUnsuppressedDigis = HcalDigiProducer 
+module hcalDigis = HcalDigiProducer 
 {
   bool doTimeSlew = true
   bool doNoise = true
@@ -13,10 +13,10 @@ module hcalUnsuppressedDigis = HcalDigiProducer
     bool syncPhase = true
     int32 firstRing = 1
     vdouble samplingFactors = {
-      119.91, 120.59, 119.41, 120.62, 120.06, 
-      120.46, 119.97, 119.58, 120.52, 120.92, 
-      121.38, 122.16, 121.49, 123.18, 122.53, 
-      132.78
+      116.78, 116.33, 116.16, 116.39, 116.57,
+      116.53, 115.54, 115.55, 116.53, 115.41,
+      115.10, 115.03, 116.22, 115.08, 115.81,
+      125.42
     }
   }
 
@@ -30,9 +30,9 @@ module hcalUnsuppressedDigis = HcalDigiProducer
     bool syncPhase = true
     int32 firstRing = 16
     vdouble samplingFactors = {
-      179.26, 170.86, 158.45, 161.63, 162.35, 
-      162.14, 160.51, 161.81, 162.46, 161.84, 
-      162.32, 163.78, 158.39, 158,39
+      183.56, 179.85, 168.36, 169.35, 169.59,
+      169.56, 170.74, 170.33, 171.40, 171.68,
+      172.46, 173.68, 176.14, 176.14
     }
   }
 
@@ -53,6 +53,27 @@ module hcalUnsuppressedDigis = HcalDigiProducer
     }
   }
 
+/*
+  PSet hf1 = {
+    double simHitToPhotoelectrons = 1
+    double photoelectronsToAnalog = 16.75
+    double timePhase = -4
+    int32 readoutFrameSize = 6
+    int32 binOfMaximum = 4
+    bool doPhotoStatistics = false
+    bool syncPhase = true
+  }
+
+  PSet hf2 = {
+    double simHitToPhotoelectrons = 1
+    double photoelectronsToAnalog = 11.06
+    double timePhase = -4
+    int32 readoutFrameSize = 6
+    int32 binOfMaximum = 4
+    bool doPhotoStatistics = false
+    bool syncPhase = true
+  }
+*/
   /* In HF, the SimHits energy is actually
      the number of photoelectrons from the shower
      library.  However, we need a lot more
@@ -63,10 +84,9 @@ module hcalUnsuppressedDigis = HcalDigiProducer
    
   PSet  hf1 = {
     double simHitToPhotoelectrons = 6
-    // 16.75/6, but not used
+    // 16.75/6
     double photoelectronsToAnalog = 2.79
     double timePhase = -4
-    double samplingFactor = 0.278  // pe/GeV
     int32 readoutFrameSize = 6
     int32 binOfMaximum = 4
     bool doPhotoStatistics = true
@@ -75,17 +95,7 @@ module hcalUnsuppressedDigis = HcalDigiProducer
 
   PSet hf2 = {
     double simHitToPhotoelectrons = 6
-    // 11.06 / 6, but not used
-    double photoelectronsToAnalog = 1.843
-    double timePhase = -4
-    double samplingFactor = 0.267 // pe/GeV
-    int32 readoutFrameSize = 6
-    int32 binOfMaximum = 4
-    bool doPhotoStatistics = true
-    bool syncPhase = true
-  }
-   PSet zdc = {
-    double simHitToPhotoelectrons = 6
+    // 11.06 / 6
     double photoelectronsToAnalog = 1.843
     double timePhase = -4
     int32 readoutFrameSize = 6
@@ -93,5 +103,6 @@ module hcalUnsuppressedDigis = HcalDigiProducer
     bool doPhotoStatistics = true
     bool syncPhase = true
   }
+
 }
 

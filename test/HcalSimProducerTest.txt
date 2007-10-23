@@ -1,0 +1,48 @@
+# Configuration file for EventSetupTest_t
+
+process TEST = {
+
+  path p = { mix, hcaldigi, hcalTrigPrim }
+
+  include "Geometry/CMSCommonData/data/cmsIdealGeometryXML.cfi"
+
+        module mix = MixingModule {
+               secsource input = PoolRASource  {
+                               untracked  vstring fileNames = {"file:pi100.root"}
+                               string type = "none"
+                               double averageNumber = 0
+                               int32 minBunch = xxx
+                               int32 maxBunch = xxx
+                               int32 seed = 1234567
+
+               }
+               int32 bunchspace = 25
+        }
+
+  es_module = HcalHardcodeGeometryEP {}
+  es_module = CaloTowerHardcodeGeometryEP {}
+  es_module = CaloGeometryBuilder {}
+  es_module = EcalBarrelGeometryEP {}
+  es_module = EcalEndcapGeometryEP {}
+
+
+  module print = AsciiOutputModule { }
+	
+  module HcalDbAnalyzer = HcalDbAnalyzer {}
+
+
+  include "CalibCalorimetry/HcalPlugins/data/hardwired_conditions.cfi"
+  include "SimCalorimetry/HcalSimProducers/data/hcaldigi.cfi"
+
+  module hcalTrigPrim = HcalTrigPrimRecHitProducer {}
+  module hcalDumper = HcalDigiDump {}
+
+  source = PoolSource {
+     untracked vstring fileNames = {"file:pi100.root"}
+     untracked int32 maxEvents = -1
+     untracked uint32 debugVebosity = 10
+     untracked bool   debugFlag     = true
+  }
+
+
+}
