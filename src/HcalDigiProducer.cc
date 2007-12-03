@@ -113,12 +113,12 @@ void HcalDigiProducer::produce(edm::Event& e, const edm::EventSetup& eventSetup)
   theHOHits.clear();
   theHFHits.clear();
   // Step A: Get Inputs
-  edm::Handle<CrossingFrame> cf;
-  e.getByType(cf);
+  edm::Handle<CrossingFrame<PCaloHit> > cf;
+  e.getByLabel("mix", "HcalHits",cf);
 
   // test access to SimHits
   const std::string subdet("HcalHits");
-  std::auto_ptr<MixCollection<PCaloHit> > col(new MixCollection<PCaloHit>(cf.product(), subdet));
+  std::auto_ptr<MixCollection<PCaloHit> > col(new MixCollection<PCaloHit>(cf.product()));
   //fillFakeHits();
 
   if(theHitCorrection != 0)
