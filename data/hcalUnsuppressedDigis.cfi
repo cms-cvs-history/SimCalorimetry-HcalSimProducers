@@ -4,7 +4,7 @@ module hcalUnsuppressedDigis = HcalDigiProducer
 {
   bool doTimeSlew = true
   bool doNoise = true
-
+  bool doHPDNoise = false
   using hcalSimParameters
 }
 
