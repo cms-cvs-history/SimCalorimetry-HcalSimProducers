@@ -9,10 +9,10 @@ block hcalSimParameters = {
     bool syncPhase = true
     int32 firstRing = 1
     vdouble samplingFactors = {
-      119.53, 119.16, 119.16, 119.15, 119.54,
-      119.04, 119.28, 117.93, 118.18, 118.63,
-      118.05, 118.38, 118.79, 119.56, 119.39,
-      134.40
+      120.58, 120.58, 119.90, 120.14, 120.63,
+      120.21, 119.69, 119.55, 119.62, 119.60,
+      118.65, 119.38, 118.89, 120.34, 119.01,
+      132.37
     }
   }
 
@@ -26,9 +26,9 @@ block hcalSimParameters = {
     bool syncPhase = true
     int32 firstRing = 16
     vdouble samplingFactors = {
-      198.78, 184.26, 173.67, 174.84, 175.85,
-      175.71, 176.05, 177.05, 176.10, 176.51,
-      177.67, 178.11, 172.91, 172.91
+      196.83, 188.30, 175.24, 177.20, 178.45,
+      177.39, 178.18, 177.60, 178.26, 179.63,
+      179.98, 180.52, 174.63, 174.63
     }
   }
 
@@ -61,7 +61,7 @@ block hcalSimParameters = {
     double simHitToPhotoelectrons = 6
     // 16.75/6, but not used
     double photoelectronsToAnalog = 2.79
-    double timePhase = -4
+    double timePhase = 4
     double samplingFactor = 0.278  // pe/GeV
     int32 readoutFrameSize = 6
     int32 binOfMaximum = 4
@@ -73,7 +73,7 @@ block hcalSimParameters = {
     double simHitToPhotoelectrons = 6
     // 11.06 / 6, but not used
     double photoelectronsToAnalog = 1.843
-    double timePhase = -4
+    double timePhase = 4
     double samplingFactor = 0.267 // pe/GeV
     int32 readoutFrameSize = 6
     int32 binOfMaximum = 4
