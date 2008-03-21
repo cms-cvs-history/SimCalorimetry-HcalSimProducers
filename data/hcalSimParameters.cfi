@@ -61,7 +61,7 @@ block hcalSimParameters = {
     double simHitToPhotoelectrons = 6
     // 16.75/6, but not used
     double photoelectronsToAnalog = 2.79
-    double timePhase = -4
+    double timePhase = 4
     double samplingFactor = 0.278  // pe/GeV
     int32 readoutFrameSize = 6
     int32 binOfMaximum = 4
@@ -73,7 +73,7 @@ block hcalSimParameters = {
     double simHitToPhotoelectrons = 6
     // 11.06 / 6, but not used
     double photoelectronsToAnalog = 1.843
-    double timePhase = -4
+    double timePhase = 4
     double samplingFactor = 0.267 // pe/GeV
     int32 readoutFrameSize = 6
     int32 binOfMaximum = 4
