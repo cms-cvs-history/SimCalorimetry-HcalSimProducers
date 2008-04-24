@@ -1,6 +1,6 @@
 include "SimCalorimetry/HcalSimProducers/data/hcalSimParameters.cfi"
 
-module hcalUnsuppressedDigis = HcalDigiProducer 
+module simHcalUnsuppressedDigis = HcalDigiProducer 
 {
   bool doTimeSlew = true
   bool doNoise = true
