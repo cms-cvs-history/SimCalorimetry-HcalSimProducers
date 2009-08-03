@@ -82,13 +82,14 @@ private:
 
   HcalHitCorrection * theHitCorrection;
   CaloVNoiseSignalGenerator * theNoiseGenerator;
+  //  CaloVNoiseHitGenerator * theNoiseHitGenerator;
 
   HBHEDigitizer * theHBHEDigitizer;
   HODigitizer* theHODigitizer;
   HFDigitizer* theHFDigitizer;
   ZDCDigitizer* theZDCDigitizer;
 
-  bool doZDC;
+  bool isZDC,isHCAL,zdcgeo,hbhegeo,hogeo,hfgeo;
 
   std::string hitsProducer_;
 
