@@ -306,11 +306,10 @@ void HcalDigitizer::checkGeometry(const edm::EventSetup & eventSetup) {
   // combine HB & HE
 
 
+  hbheCells_ = hbCells ;
+  hbheCells_.insert(hbheCells_.end(), heCells.begin(), heCells.end());
 
-  vector<DetId> hbheCells = hbCells;
-  hbheCells.insert(hbheCells.end(), heCells.begin(), heCells.end());
-
-  theHBHEDigitizer->setDetIds(hbheCells);
+  theHBHEDigitizer->setDetIds(hbheCells_);
   theHODigitizer->setDetIds(hoCells);
   theHFDigitizer->setDetIds(hfCells);
   theZDCDigitizer->setDetIds(zdcCells); 

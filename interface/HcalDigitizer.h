@@ -93,6 +93,8 @@ private:
 
   std::string hitsProducer_;
 
+  std::vector<DetId> hbheCells_ ;
+
 };
 
 #endif
