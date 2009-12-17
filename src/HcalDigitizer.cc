@@ -179,6 +179,7 @@ HcalDigitizer::~HcalDigitizer() {
 void HcalDigitizer::setHBHENoiseSignalGenerator(HcalBaseSignalGenerator * noiseGenerator)
 {
   noiseGenerator->setParameterMap(theParameterMap);
+  noiseGenerator->setElectronicsSim(theHBHEElectronicsSim);
   theHBHEDigitizer->setNoiseSignalGenerator(noiseGenerator);
   theHBHEAmplifier->setNoiseSignalGenerator(noiseGenerator);
 }
@@ -186,6 +187,7 @@ void HcalDigitizer::setHBHENoiseSignalGenerator(HcalBaseSignalGenerator * noiseG
 void HcalDigitizer::setHFNoiseSignalGenerator(HcalBaseSignalGenerator * noiseGenerator)
 {
   noiseGenerator->setParameterMap(theParameterMap);
+  noiseGenerator->setElectronicsSim(theHFElectronicsSim);
   theHFDigitizer->setNoiseSignalGenerator(noiseGenerator);
   theHFAmplifier->setNoiseSignalGenerator(noiseGenerator);
 }
@@ -193,12 +195,14 @@ void HcalDigitizer::setHFNoiseSignalGenerator(HcalBaseSignalGenerator * noiseGen
 void HcalDigitizer::setHONoiseSignalGenerator(HcalBaseSignalGenerator * noiseGenerator)
 {
   noiseGenerator->setParameterMap(theParameterMap);
+  noiseGenerator->setElectronicsSim(theHOElectronicsSim);
   theHODigitizer->setNoiseSignalGenerator(noiseGenerator);
   theHOAmplifier->setNoiseSignalGenerator(noiseGenerator);
 }
 
 void HcalDigitizer::setZDCNoiseSignalGenerator(HcalBaseSignalGenerator * noiseGenerator)
 {
+  noiseGenerator->setElectronicsSim(theZDCElectronicsSim);
   noiseGenerator->setParameterMap(theParameterMap);
   theZDCDigitizer->setNoiseSignalGenerator(noiseGenerator);
   theZDCAmplifier->setNoiseSignalGenerator(noiseGenerator);
