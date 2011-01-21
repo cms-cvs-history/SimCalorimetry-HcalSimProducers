@@ -11,6 +11,9 @@
 #include "Geometry/CaloGeometry/interface/CaloGeometry.h"
 #include "DataFormats/DetId/interface/DetId.h"
 #include "FWCore/Framework/interface/Frameworkfwd.h"
+#include "SimCalorimetry/HcalSimProducers/src/HcalHitRelabeller.h"
+
+#include "SimCalorimetry/HcalSimAlgos/interface/HcalUpgradeTraits.h"
 
 class CaloVShape;
 class CaloHitResponse;
@@ -53,6 +56,8 @@ private:
   typedef CaloTDigitizer<HODigitizerTraits> HODigitizer;
   typedef CaloTDigitizer<HFDigitizerTraits> HFDigitizer;
   typedef CaloTDigitizer<ZDCDigitizerTraits> ZDCDigitizer;
+
+  typedef CaloTDigitizer<HcalUpgradeDigitizerTraits> UpgradeDigitizer;
  
   HcalSimParameterMap * theParameterMap;
   CaloVShape * theHcalShape;
@@ -80,12 +85,15 @@ private:
 
   HPDIonFeedbackSim * theIonFeedback;
   HcalCoderFactory * theCoderFactory;
+  
+  HcalCoderFactory * theUpgradeCoderFactory;
 
   HcalElectronicsSim * theHBHEElectronicsSim;
   HcalElectronicsSim * theHFElectronicsSim;
   HcalElectronicsSim * theHOElectronicsSim;
   HcalElectronicsSim * theZDCElectronicsSim;
 
+  HcalElectronicsSim * theUpgradeElectronicsSim;
 
   HBHEHitFilter theHBHEHitFilter;
   HFHitFilter   theHFHitFilter;
@@ -104,6 +112,8 @@ private:
   HFDigitizer* theHFDigitizer;
   ZDCDigitizer* theZDCDigitizer;
 
+  UpgradeDigitizer * theUpgradeDigitizer;
+
   // need to cache some DetIds for the digitizers,
   // if they don't come straight from the geometry
   std::vector<DetId> theHBHEDetIds;
@@ -111,6 +121,8 @@ private:
   std::vector<DetId> theHOSiPMDetIds;
 
   bool isZDC,isHCAL,zdcgeo,hbhegeo,hogeo,hfgeo;
+  bool relabel_;
+  HcalHitRelabeller* theRelabeller;
 
   std::string hitsProducer_;
 

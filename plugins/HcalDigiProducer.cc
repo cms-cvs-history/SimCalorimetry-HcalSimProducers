@@ -9,6 +9,7 @@ HcalDigiProducer::HcalDigiProducer(const edm::ParameterSet& ps)
   produces<HODigiCollection>();
   produces<HFDigiCollection>();
   produces<ZDCDigiCollection>();
+  produces<HcalUpgradeDigiCollection>();
 }
 
 

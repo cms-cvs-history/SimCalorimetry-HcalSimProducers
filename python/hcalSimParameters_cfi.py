@@ -33,17 +33,17 @@ hcalSimParameters = cms.PSet(
         firstRing = cms.int32(1),
         binOfMaximum = cms.int32(5),
         doPhotoStatistics = cms.bool(True),
-        photoelectronsToAnalog = cms.double(0.3065),
+        photoelectronsToAnalog = cms.double(3.0),
         simHitToPhotoelectrons = cms.double(4000.0),
-        samplingFactors = cms.vdouble(217.0, 217.0, 217.0, 217.0, 217.0, 
-            217.0, 217.0, 217.0, 217.0, 217.0, 
-            217.0, 217.0, 217.0, 217.0, 217.0, 
-            217.0),
+        samplingFactors = cms.vdouble(231.0, 231.0, 231.0, 231.0, 
+            360.0, 360.0, 360.0, 360.0, 360.0, 360.0,
+            360.0, 360.0, 360.0, 360.0, 360.0), 
         syncPhase = cms.bool(True),
         timePhase = cms.double(5.0),
         timeSmearing = cms.bool(False),
         # 0 is HPD, 1 is SiPM, 2, is hardcoded combination 
-        siPMCode = cms.int32(2)
+        siPMCode = cms.int32(2),
+        pixels = cms.int32(2500)
     ),
     hb = cms.PSet(
         readoutFrameSize = cms.int32(10),
