@@ -498,7 +498,6 @@ void  HcalDigitizer::updateGeometry()
   if(hfCells.empty()) hfgeo = false;
   // combine HB & HE
 
-
   theHBHEDetIds = hbCells;
   theHBHEDetIds.insert(theHBHEDetIds.end(), heCells.begin(), heCells.end());
 
@@ -507,6 +506,7 @@ void  HcalDigitizer::updateGeometry()
   buildHOSiPMCells(hoCells);
   theHFDigitizer->setDetIds(hfCells);
   theZDCDigitizer->setDetIds(zdcCells); 
+  if(theUpgradeDigitizer) theUpgradeDigitizer->setDetIds(theHBHEDetIds);
 }
 
 
