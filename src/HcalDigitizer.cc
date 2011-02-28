@@ -416,8 +416,6 @@ void HcalDigitizer::produce(edm::Event& e, const edm::EventSetup& eventSetup) {
     theHitCorrection->clear();
     if(isHCAL)
       theHitCorrection->fillChargeSums(*col);
-    if(isZDC)
-      theHitCorrection->fillChargeSums(*colzdc);
   }
   // Step B: Create empty output
 
