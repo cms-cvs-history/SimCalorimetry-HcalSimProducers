@@ -10,8 +10,8 @@
 
 /** \class HcalHitRelabeller
   *  
-  * $Date: 2010/05/24 14:49:39 $
-  * $Revision: 1.1 $
+  * $Date: 2011/01/21 23:19:53 $
+  * $Revision: 1.1.2.1 $
   * \author J. Mans - Minnesota
   */
 class HcalHitRelabeller {
@@ -27,7 +27,9 @@ private:
 
   CrossingFrame<PCaloHit>* m_crossFrame;
   std::vector<PCaloHit> m_signalRelabelled;
-  std::vector<PCaloHit> m_pileupRelabelled;
+  // outer vector is for events, since crossingFrame needs everything
+  // pinnned in memory
+  std::vector<std::vector<PCaloHit> > m_pileupRelabelled;
 
 };
 

@@ -3,6 +3,8 @@
 #include "DataFormats/HcalDetId/interface/HcalDetId.h"
 
 HcalHitRelabeller::HcalHitRelabeller(const edm::ParameterSet& ps) : m_crossFrame(0) {
+  // try to make sure the memory gets pinned in place
+  m_pileupRelabelled.reserve(5000);
   m_segmentation.resize(29);
   for (int i=0; i<29; i++) {
     char name[10];
@@ -74,12 +76,13 @@ void HcalHitRelabeller::process(const CrossingFrame<PCaloHit>& cf) {
   // const unsigned int np=cf.getNrPileups();
   // for (unsigned int j=0; j<np; j++) {
   EncodedEventId lastId;
+  int ievent = 0;
   for (std::vector<const PCaloHit*>::const_iterator i = ibegin;
        i != iend; ++i) {
-    if ((m_pileupRelabelled.size() > 0) && (lastId != (*i)->eventId())) {
-      m_crossFrame->addPileups(lastId.bunchCrossing(), &m_pileupRelabelled, 
+    if ((!m_pileupRelabelled[ievent].empty()) && (lastId != (*i)->eventId())) {
+      m_crossFrame->addPileups(lastId.bunchCrossing(), &m_pileupRelabelled[ievent], 
 			       lastId.event());
-      m_pileupRelabelled.clear();
+      ++ievent;
     }
     // const PCaloHit& pch=cf.getObject(base+j);
     DetId newid=relabel((*i)->id());
@@ -87,12 +90,13 @@ void HcalHitRelabeller::process(const CrossingFrame<PCaloHit>& cf) {
 		    (*i)->geantTrackId(), (*i)->energyEM()/(*i)->energy(), 
 		    (*i)->depth());
     newHit.setEventId((*i)->eventId());
-    m_pileupRelabelled.push_back(newHit);
+    m_pileupRelabelled[ievent].push_back(newHit);
     lastId = (*i)->eventId();
   }
-
-  m_crossFrame->addPileups(lastId.bunchCrossing(), &m_pileupRelabelled,
-			   lastId.event());
+  if(!m_pileupRelabelled[ievent].empty()){
+    m_crossFrame->addPileups(lastId.bunchCrossing(), &m_pileupRelabelled[ievent],
+                             lastId.event());
+  }
 }
 
 void HcalHitRelabeller::clear() {
