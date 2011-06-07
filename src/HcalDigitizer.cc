@@ -21,7 +21,7 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
 #include "SimCalorimetry/CaloSimAlgos/interface/CaloTDigitizer.h"
-#include "SimCalorimetry/CaloSimAlgos/interface/CaloShapeIntegrator.h"
+#include "SimCalorimetry/CaloSimAlgos/interface/CaloCachedShapeIntegrator.h"
 #include "DataFormats/HcalDigi/interface/HcalDigiCollections.h"
 #include "Geometry/Records/interface/CaloGeometryRecord.h"
 #include "CalibFormats/HcalObjects/interface/HcalDbService.h"
@@ -88,8 +88,8 @@ HcalDigitizer::HcalDigitizer(const edm::ParameterSet& ps)
   theZDCShape(new ZDCShape()),
   theHcalIntegratedShape(0),
   theSiPMIntegratedShape(0),
-  theHFIntegratedShape(new CaloShapeIntegrator(theHFShape)),
-  theZDCIntegratedShape(new CaloShapeIntegrator(theZDCShape)),
+  theHFIntegratedShape(new CaloCachedShapeIntegrator(theHFShape)),
+  theZDCIntegratedShape(new CaloCachedShapeIntegrator(theZDCShape)),
   theHBHEResponse(0),
   theHBHESiPMResponse(0),
   theHOResponse(0),   
@@ -175,12 +175,12 @@ HcalDigitizer::HcalDigitizer(const edm::ParameterSet& ps)
   if(doHBHEHPD || doHOHPD )
   {
     theHcalShape = new HcalShape();
-    theHcalIntegratedShape = new CaloShapeIntegrator(theHcalShape);
+    theHcalIntegratedShape = new CaloCachedShapeIntegrator(theHcalShape);
   }
   if(doHBHESiPM || doHOSiPM )
   {
     theSiPMShape = new HcalSiPMShape();
-    theSiPMIntegratedShape = new CaloShapeIntegrator(theSiPMShape);
+    theSiPMIntegratedShape = new CaloCachedShapeIntegrator(theSiPMShape);
   }
 
   if(doHBHEHPD)
