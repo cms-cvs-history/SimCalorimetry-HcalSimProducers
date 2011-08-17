@@ -206,7 +206,7 @@ HcalDigitizer::HcalDigitizer(const edm::ParameterSet& ps)
 
   if(doHBHESiPM)
   {
-    theHBHESiPMResponse = new HcalSiPMHitResponse(theParameterMap, theSiPMIntegratedShape);
+    theHBHESiPMResponse = new HcalSiPMHitResponse(theParameterMap, theSiPMShape, theSiPMIntegratedShape);
     theHBHESiPMResponse->setHitFilter(&theHBHEHitFilter);
     theHBHESiPMDigitizer = new HBHEDigitizer(theHBHESiPMResponse, 
 					     theHBHEElectronicsSim, doEmpty);
@@ -216,7 +216,7 @@ HcalDigitizer::HcalDigitizer(const edm::ParameterSet& ps)
   }
   if(doHOSiPM)
   {
-    theHOSiPMResponse = new HcalSiPMHitResponse(theParameterMap, theSiPMIntegratedShape);
+    theHOSiPMResponse = new HcalSiPMHitResponse(theParameterMap, theSiPMShape, theSiPMIntegratedShape);
     theHOSiPMResponse->setHitFilter(&theHOSiPMHitFilter);
     theHOSiPMDigitizer = new HODigitizer(theHOSiPMResponse, theHOElectronicsSim, doEmpty);
   }
