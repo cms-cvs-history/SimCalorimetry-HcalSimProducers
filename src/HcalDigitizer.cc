@@ -386,10 +386,10 @@ void HcalDigitizer::produce(edm::Event& e, const edm::EventSetup& eventSetup) {
   theHFAmplifier->setDbService(conditions.product());
   theHOAmplifier->setDbService(conditions.product());
   theZDCAmplifier->setDbService(conditions.product());
-
+  theUpgradeElectronicsSim->setDbService(conditions.product());
+  theParameterMap->setDbService(conditions.product());
   theCoderFactory->setDbService(conditions.product());
   theUpgradeCoderFactory->setDbService(conditions.product());
-  theParameterMap->setDbService(conditions.product());
 
    edm::ESHandle<HcalCholeskyMatrices> refCholesky;
    eventSetup.get<HcalCholeskyMatricesRcd>().get(refCholesky);
