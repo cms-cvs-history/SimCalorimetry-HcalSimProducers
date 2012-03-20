@@ -180,6 +180,11 @@ HcalDigitizer::HcalDigitizer(const edm::ParameterSet& ps)
   bool doHBHESiPM = !hbSiPMCells.empty();
   bool doHOSiPM = (theHOSiPMCode != 0);
 
+  /*
+  std::cout << " SimCalorimetry/HcalSimProducers/src/HcalDigitizer.cc : "
+	    << " doHBHESiPM = " << doHBHESiPM << std::endl;
+  */
+
   if(doHBHEHPD || doHOHPD )
   {
     theHcalShape = new HcalShape();
@@ -504,6 +509,9 @@ void HcalDigitizer::checkGeometry(const edm::EventSetup & eventSetup) {
     theGeometry = &*geometry;
     updateGeometry();
   }
+  // pass it to Relabeller
+  theRelabeller->setGeometry(theGeometry);
+
 }
 
 void  HcalDigitizer::updateGeometry()
@@ -516,7 +524,45 @@ void  HcalDigitizer::updateGeometry()
   theZDCResponse->setGeometry(theGeometry);
 
   const vector<DetId>& hbCells = theGeometry->getValidDetIds(DetId::Hcal, HcalBarrel);
+
+  /*
+   std::cout << " ===== HcalDigitizer::updateGeometry: valid HB cells" << std::endl;
+
+  for (unsigned int i = 0; i < hbCells.size(); i++) {
+
+    HcalDetId cell(hbCells[i]); 
+    int depth = cell.depth();
+    int iphi  = cell.iphi();
+    int ieta  = cell.ieta();
+    int sub   = cell.subdet();
+
+    std::cout << "sub, ieta, iphi, depth = "  
+	      <<  sub << ", " << ieta << ", " << iphi << ", " << depth 
+	      << std::endl; 
+  }
+  */
+
   const vector<DetId>& heCells = theGeometry->getValidDetIds(DetId::Hcal, HcalEndcap);
+
+  /*  
+  std::cout << " ===== HcalDigitizer::updateGeometry: valid HE cells" << std::endl;
+
+  for (unsigned int i = 0; i < heCells.size(); i++) {
+
+    HcalDetId cell(heCells[i]); 
+    int depth = cell.depth();
+    int iphi  = cell.iphi();
+    int ieta  = cell.ieta();
+    int sub   = cell.subdet();
+
+    std::cout << "sub, ieta, iphi, depth = "  
+	      <<  sub << ", " << ieta << ", " << iphi << ", " << depth 
+	      << std::endl; 
+
+  }
+ 
+  */
+
   const vector<DetId>& hoCells = theGeometry->getValidDetIds(DetId::Hcal, HcalOuter);
   const vector<DetId>& hfCells = theGeometry->getValidDetIds(DetId::Hcal, HcalForward);
   const vector<DetId>& zdcCells = theGeometry->getValidDetIds(DetId::Calo, HcalZDCDetId::SubdetectorId);

@@ -2,6 +2,9 @@
 #include "SimDataFormats/CaloTest/interface/HcalTestNumbering.h"
 #include "DataFormats/HcalDetId/interface/HcalDetId.h"
 
+#include "Geometry/CaloGeometry/interface/CaloSubdetectorGeometry.h"
+#include "Geometry/CaloGeometry/interface/CaloCellGeometry.h"
+
 HcalHitRelabeller::HcalHitRelabeller(const edm::ParameterSet& ps) : m_crossFrame(0) {
   // try to make sure the memory gets pinned in place
   m_pileupRelabelled.reserve(5000);
@@ -53,12 +56,61 @@ void HcalHitRelabeller::process(const CrossingFrame<PCaloHit>& cf) {
   
   for (std::vector<const PCaloHit*>::const_iterator i = ibegin; 
        i != iend; ++i) {
+
+    DetId testId = (*i)->id(); //std::vector<const PCaloHit*>::const_iterator i
+    int det, z, depth, eta, phi, layer;
+    HcalTestNumbering::unpackHcalIndex(testId,det,z,depth,eta,phi,layer);
+    /*
+    std::cout << std::endl 
+	      << "TestNumId ->  det: " << det << " "
+	      << "depth: " << depth << " "
+	      << "ieta: "  << eta << " "
+	      << "iphi: "  << phi << " "
+	      << "layer: " << layer 
+	      << std::endl;
+    
+    HcalDetId cell((*i)->id()); 
+
+    int iphi, ieta, sub;
+    depth = cell.depth();
+    iphi  = cell.iphi()-1;
+    ieta  = cell.ieta();
+    sub   = cell.subdet();
+    std::cout << "  HcalDetId ->  sub: " << sub << " "
+	      << "depth: " << depth << " "
+	      << "ieta: "  << ieta << " "
+	      << "iphi: "  << iphi << " " 
+	      << std::endl;
+
+
+    const CaloCellGeometry *cellGeometry =
+      theGeometry->getSubdetectorGeometry(cell)->getGeometry(cell);
+    const GlobalPoint& globalposition = cellGeometry->getPosition();
+    
+    std::cout << "PCaloHit position: " << globalposition << std::endl;
+
+    */
+      
+
     // std::cout << std::hex << (*i)->id() << std::dec << '\n';
     DetId newid = relabel((*i)->id());
     // std::cout << std::hex << newid.rawId() << std::dec << '\n';
+
+    HcalDetId newcell(newid);
+
+
+    const CaloCellGeometry *cellGeometry =
+      theGeometry->getSubdetectorGeometry(newcell)->getGeometry(newcell);
+    GlobalPoint globalposition = (GlobalPoint)(cellGeometry->getPosition());
+    
+    // std::cout << "PCaloHit " << newcell << " position: " << globalposition << std::endl;
+
+
     PCaloHit newHit(newid.rawId(), (*i)->energy(), (*i)->time(), 
 		    (*i)->geantTrackId(), (*i)->energyEM()/(*i)->energy(), 
-		    (*i)->depth());
+		    //		    (*i)->depth());
+		    newcell.depth());
+
     // std::cout << newHit.energy() << '\n';
     newHit.setEventId((*i)->eventId());
     // std::cout << newHit.eventId().event() << '\n';
@@ -105,33 +157,49 @@ void HcalHitRelabeller::clear() {
 }
 
 
+void HcalHitRelabeller::setGeometry(const CaloGeometry*& geom) {
+
+  theGeometry = geom;
+}
+
 DetId HcalHitRelabeller::relabel(const uint32_t testId) const {
   HcalDetId hid;
 
   int det, z, depth, eta, phi, layer, sign;
+
+  //  std::cout << " HcalHitRelabeller::relabel " << std::endl;
+
   HcalTestNumbering::unpackHcalIndex(testId,det,z,depth,eta,phi,layer);
-  layer-=1; // one is added in the simulation...
+
+  layer-=1; // one is added in the simulation, here used for indexing  
 
   sign=(z==0)?(-1):(1);
-  // std::cout << "det: " << det << " "
-  // 	    << "z: " << z << " "
-  // 	    << "depth: " << depth << " "
-  // 	    << "ieta: " << eta << " "
-  // 	    << "iphi: " << phi << " "
-  // 	    << "layer: " << layer << " ";
-  // std::cout.flush();
+
+  /*  
+  std::cout << "det: " << det << " "
+  	    << "z: " << z << " "
+   	    << "depth: " << depth << " "
+   	    << "ieta: " << eta << " "
+   	    << "iphi: " << phi << " "
+   	    << "layer: " << layer << " ";
+  std::cout.flush();
+  */
+
+  int newDepth = 0; // moved out of if's just for printing purposes...
+
   if (det==int(HcalBarrel)) {
-    int newDepth=m_segmentation[eta-1][layer];
+    newDepth=m_segmentation[eta-1][layer];
     hid=HcalDetId(HcalBarrel,eta*sign,phi,newDepth);        
   }
   if (det==int(HcalEndcap)) {
-    int newDepth=m_segmentation[eta-1][layer];
+    newDepth=m_segmentation[eta-1][layer];
     if (eta>=21 && (phi%2)==0) phi--; // combine double-width towers in HE
-    if (eta==16 && newDepth<3) newDepth=3; // tower 16
+    if (eta==16 && newDepth<3) newDepth=3; // tower 16 HACK to be watched out..
     hid=HcalDetId(HcalEndcap,eta*sign,phi,newDepth);    
   }
   if (det==int(HcalOuter)) {
     hid=HcalDetId(HcalOuter,eta*sign,phi,4);    
+    newDepth = 4;
   }
   if (det==int(HcalForward)) {
     if ((phi%2)==0) phi--;
@@ -141,15 +209,22 @@ DetId HcalHitRelabeller::relabel(const uint32_t testId) const {
     }
 
     hid=HcalDetId(HcalForward,eta*sign,phi,depth);
+    newDepth = depth; 
+
   }
-  // std::cout << std::hex << hid.rawId() << std::dec << ' ';
-  // std::cout.flush();
-  // std::cout //<< det << " "
-  // 	    //<< z << " "
-  // 	    //<< depth << " "
-  // 	    //<< eta << " "
-  // 	    //<< phi << " "
-  // 	    //<< layer << " "
-  // 	    <<  " --> " << hid << std::endl;  
+
+  /*
+  std::cout << " new HcalDetId -> hex.RawID = "
+	    << std::hex << hid.rawId() << std::dec;
+  std::cout.flush();
+  std::cout << " det, z, depth, eta, phi = "
+	    << det << " "
+	    << z << " "
+	    << newDepth << " "
+	    << eta << " "
+	    << phi << " "
+	    <<  " ---> " << hid << std::endl;  
+  */
+
   return hid;
 }
