@@ -33,12 +33,11 @@
 #include "DataFormats/HcalDetId/interface/HcalZDCDetId.h"
 #include "SimCalorimetry/HcalSimAlgos/interface/HPDNoiseGenerator.h"
 #include <boost/foreach.hpp>
-using namespace std;
 
 namespace HcalDigitizerImpl {
 
   template<typename SIPMDIGITIZER>
-  void fillSiPMCells(const vector<int> & siPMCells, SIPMDIGITIZER * siPMDigitizer)
+  void fillSiPMCells(const std::vector<int> & siPMCells, SIPMDIGITIZER * siPMDigitizer)
   {
     std::vector<DetId> siPMDetIds;
     siPMDetIds.reserve(siPMCells.size());
@@ -53,7 +52,7 @@ namespace HcalDigitizerImpl {
   // if both exist, assume the SiPM one has cells filled, and
   // assign the rest to the HPD
   template<typename HPDDIGITIZER, typename SIPMDIGITIZER>
-  void fillCells(const vector<DetId>& allCells,
+  void fillCells(const std::vector<DetId>& allCells,
                  HPDDIGITIZER * hpdDigitizer,
                  SIPMDIGITIZER * siPMDigitizer)
   {
@@ -144,6 +143,7 @@ HcalDigitizer::HcalDigitizer(const edm::ParameterSet& ps)
   double HEtp = ps.getParameter<double>("HETuningParameter");
   double HFtp = ps.getParameter<double>("HFTuningParameter");
   double HOtp = ps.getParameter<double>("HOTuningParameter");
+
 
   // need to make copies, because they might get different noise generators
   theHBHEAmplifier = new HcalAmplifier(theParameterMap, doNoise);
@@ -250,9 +250,10 @@ HcalDigitizer::HcalDigitizer(const edm::ParameterSet& ps)
   theHFDigitizer = new HFDigitizer(theHFResponse, theHFElectronicsSim, doEmpty);
   theZDCDigitizer = new ZDCDigitizer(theZDCResponse, theZDCElectronicsSim, doEmpty);
 
-  relabel_=ps.getUntrackedParameter<bool>("RelabelHits",false);
+  edm::ParameterSet ps0 = ps.getParameter<edm::ParameterSet>("HcalReLabel");
+  relabel_ = ps0.getUntrackedParameter<bool>("RelabelHits");
   if (relabel_) {
-    theRelabeller=new HcalHitRelabeller(ps.getUntrackedParameter<edm::ParameterSet>("RelabelRules"));
+    theRelabeller=new HcalHitRelabeller(ps0.getUntrackedParameter<edm::ParameterSet>("RelabelRules"));
   }	
 	
   bool doHPDNoise = ps.getParameter<bool>("doHPDNoise");
@@ -523,7 +524,7 @@ void  HcalDigitizer::updateGeometry()
   theHFResponse->setGeometry(theGeometry);
   theZDCResponse->setGeometry(theGeometry);
 
-  const vector<DetId>& hbCells = theGeometry->getValidDetIds(DetId::Hcal, HcalBarrel);
+  const std::vector<DetId>& hbCells = theGeometry->getValidDetIds(DetId::Hcal, HcalBarrel);
 
   /*
    std::cout << " ===== HcalDigitizer::updateGeometry: valid HB cells" << std::endl;
@@ -542,7 +543,7 @@ void  HcalDigitizer::updateGeometry()
   }
   */
 
-  const vector<DetId>& heCells = theGeometry->getValidDetIds(DetId::Hcal, HcalEndcap);
+  const std::vector<DetId>& heCells = theGeometry->getValidDetIds(DetId::Hcal, HcalEndcap);
 
   /*  
   std::cout << " ===== HcalDigitizer::updateGeometry: valid HE cells" << std::endl;
@@ -563,11 +564,11 @@ void  HcalDigitizer::updateGeometry()
  
   */
 
-  const vector<DetId>& hoCells = theGeometry->getValidDetIds(DetId::Hcal, HcalOuter);
-  const vector<DetId>& hfCells = theGeometry->getValidDetIds(DetId::Hcal, HcalForward);
-  const vector<DetId>& zdcCells = theGeometry->getValidDetIds(DetId::Calo, HcalZDCDetId::SubdetectorId);
-  //const vector<DetId>& hcalTrigCells = geometry->getValidDetIds(DetId::Hcal, HcalTriggerTower);
-  //const vector<DetId>& hcalCalib = geometry->getValidDetIds(DetId::Calo, HcalCastorDetId::SubdetectorId);
+  const std::vector<DetId>& hoCells = theGeometry->getValidDetIds(DetId::Hcal, HcalOuter);
+  const std::vector<DetId>& hfCells = theGeometry->getValidDetIds(DetId::Hcal, HcalForward);
+  const std::vector<DetId>& zdcCells = theGeometry->getValidDetIds(DetId::Calo, HcalZDCDetId::SubdetectorId);
+  //const std::vector<DetId>& hcalTrigCells = geometry->getValidDetIds(DetId::Hcal, HcalTriggerTower);
+  //const std::vector<DetId>& hcalCalib = geometry->getValidDetIds(DetId::Calo, HcalCastorDetId::SubdetectorId);
   //std::cout<<"HcalDigitizer::CheckGeometry number of cells: "<<zdcCells.size()<<std::endl;
 
   if(zdcCells.empty()) zdcgeo = false;
