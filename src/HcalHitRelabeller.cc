@@ -14,9 +14,9 @@ HcalHitRelabeller::HcalHitRelabeller(const edm::ParameterSet& ps) : m_crossFrame
     snprintf(name,10,"Eta%d",i+1);
     if (i>0) {
       m_segmentation[i]=ps.getUntrackedParameter<std::vector<int> >(name,m_segmentation[i-1]);
-    }
-    else 
+    } else {
       m_segmentation[i]=ps.getUntrackedParameter<std::vector<int> >(name);
+    }
   }
 }
 
@@ -43,9 +43,25 @@ void HcalHitRelabeller::process(const CrossingFrame<PCaloHit>& cf) {
   DetId newid=relabel(i->id());
   m_signalRelabelled.push_back(PCaloHit(newid.rawId(),i->energy(),i->time(),i->geantTrackId(),i->energyEM()/i->energy(),i->depth()));
   }  
+
+  for (int dp=1; dp<=7; ++dp) {
+    for (int eta=1; eta<30; ++eta) {
+      for (int i=0; i<72; ++i) {
+	int iz=1, phi;
+	if (i%2 != 0) iz = -1;
+	phi = i/2;
+	phi = 2*phi + 1;
+	HcalSubdetector sd=HcalBarrel;
+	if (eta > 16 || (eta == 16 && dp > 2)) sd=HcalEndcap;
+	HcalDetId cell = HcalDetId(sd,iz*eta,phi,dp);
+	uint32_t id = cell.denseIndex();
+	HcalDetId newCell = HcalDetId::detIdFromDenseIndex(id);
+//	if (cell() != newCell()) std::cout << cell << " Id " << id << " Convert " << newCell << std::endl;
+      }
+    }
+  }
 */
-  
-//Begin Change by Wetzel - Commented lines caused errors
+  // Begin Change by Wetzel - Commented lines caused errors
   std::vector<const PCaloHit*>::const_iterator ibegin;// = cf.getSignal().begin();
   std::vector<const PCaloHit*>::const_iterator iend;// = cf.getSignal().end();
   // signal
@@ -103,12 +119,11 @@ void HcalHitRelabeller::process(const CrossingFrame<PCaloHit>& cf) {
       theGeometry->getSubdetectorGeometry(newcell)->getGeometry(newcell);
     GlobalPoint globalposition = (GlobalPoint)(cellGeometry->getPosition());
     
-    // std::cout << "PCaloHit " << newcell << " position: " << globalposition << std::endl;
+    //    std::cout << "PCaloHit " << newcell << " position: " << globalposition << std::endl;
 
 
     PCaloHit newHit(newid.rawId(), (*i)->energy(), (*i)->time(), 
 		    (*i)->geantTrackId(), (*i)->energyEM()/(*i)->energy(), 
-		    //		    (*i)->depth());
 		    newcell.depth());
 
     // std::cout << newHit.energy() << '\n';
@@ -189,6 +204,7 @@ DetId HcalHitRelabeller::relabel(const uint32_t testId) const {
 
   if (det==int(HcalBarrel)) {
     newDepth=m_segmentation[eta-1][layer];
+    if(eta==16 && newDepth > 2) newDepth=2;// tower 16 HACK to be watched out..
     hid=HcalDetId(HcalBarrel,eta*sign,phi,newDepth);        
   }
   if (det==int(HcalEndcap)) {
