@@ -4,10 +4,11 @@
 HcalDigiProducer::HcalDigiProducer(edm::ParameterSet const& pset, edm::EDProducer& mixMod) :
     DigiAccumulatorMixMod(),
     theDigitizer_(pset) {
-    mixMod.produces<HBHEDigiCollection>();
-    mixMod.produces<HODigiCollection>();
-    mixMod.produces<HFDigiCollection>();
-    mixMod.produces<ZDCDigiCollection>();
+    std::string const instance("simHcalUnsuppressedDigis");
+    mixMod.produces<HBHEDigiCollection>(instance);
+    mixMod.produces<HODigiCollection>(instance);
+    mixMod.produces<HFDigiCollection>(instance);
+    mixMod.produces<ZDCDigiCollection>(instance);
 }
 
 void
