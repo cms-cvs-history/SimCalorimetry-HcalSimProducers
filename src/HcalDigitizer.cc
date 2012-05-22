@@ -456,11 +456,10 @@ void HcalDigitizer::finalizeEvent(edm::Event& e, const edm::EventSetup& eventSet
   edm::LogInfo("HcalDigitizer") << "HCAL HF digis   : " << hfResult->size();
   edm::LogInfo("HcalDigitizer") << "HCAL ZDC digis   : " << zdcResult->size();
   // Step D: Put outputs into event
-  std::string const instance("simHcalUnsuppressedDigis");
-  e.put(hbheResult, instance);
-  e.put(hoResult, instance);
-  e.put(hfResult, instance);
-  e.put(zdcResult, instance);
+  e.put(hbheResult);
+  e.put(hoResult);
+  e.put(hfResult);
+  e.put(zdcResult);
 
   if(theHitCorrection) {
     theHitCorrection->clear();
