@@ -11,8 +11,8 @@
 
 /** \class HcalHitRelabeller
   *  
-  * $Date: 2011/05/09 22:55:18 $
-  * $Revision: 1.1.4.2 $
+  * $Date: 2012/03/20 09:42:44 $
+  * $Revision: 1.1.4.3 $
   * \author J. Mans - Minnesota
   */
 class HcalHitRelabeller {
@@ -29,7 +29,7 @@ private:
   const CaloGeometry* theGeometry;
 
   std::vector<std::vector<int> > m_segmentation;
-
+  bool                           m_CorrectPhi;
   CrossingFrame<PCaloHit>* m_crossFrame;
   std::vector<PCaloHit> m_signalRelabelled;
   // outer vector is for events, since crossingFrame needs everything
