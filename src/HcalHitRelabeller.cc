@@ -187,14 +187,13 @@ DetId HcalHitRelabeller::relabel(const uint32_t testId) const {
 
   int det, z, depth, eta, phi, layer, sign;
 
-  std::cout << " HcalHitRelabeller::relabel " << std::endl;
-
   HcalTestNumbering::unpackHcalIndex(testId,det,z,depth,eta,phi,layer);
 
   layer-=1; // one is added in the simulation, here used for indexing  
 
   sign=(z==0)?(-1):(1);
 
+  /*
   std::cout << "det: " << det << " "
   	    << "z: " << z << " "
    	    << "depth: " << depth << " "
@@ -202,6 +201,7 @@ DetId HcalHitRelabeller::relabel(const uint32_t testId) const {
    	    << "iphi: " << phi << " "
    	    << "layer: " << layer << " ";
   std::cout.flush();
+  */
 
   int newDepth = 0; // moved out of if's just for printing purposes...
   int phi_skip = phi;
@@ -230,6 +230,7 @@ DetId HcalHitRelabeller::relabel(const uint32_t testId) const {
     newDepth = depth; 
   }
 
+  /*
   std::cout << " new HcalDetId -> hex.RawID = "
 	    << std::hex << hid.rawId() << std::dec;
   std::cout.flush();
@@ -240,6 +241,7 @@ DetId HcalHitRelabeller::relabel(const uint32_t testId) const {
 	    << eta << " "
 	    << phi << " " << phi_skip << " "
 	    <<  " ---> " << hid << std::endl;  
+  */
 
   return hid;
 }
