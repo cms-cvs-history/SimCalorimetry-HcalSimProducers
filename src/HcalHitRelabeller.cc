@@ -7,7 +7,7 @@
 
 HcalHitRelabeller::HcalHitRelabeller(const edm::ParameterSet& ps) : m_crossFrame(0) {
   // try to make sure the memory gets pinned in place
-  m_pileupRelabelled.reserve(5000);
+  m_pileupRelabelled.resize(500);
   m_segmentation.resize(29);
   for (int i=0; i<29; i++) {
     char name[10];
@@ -26,42 +26,14 @@ void HcalHitRelabeller::process(const CrossingFrame<PCaloHit>& cf) {
     delete m_crossFrame;
     m_crossFrame = 0;
   }
-  m_signalRelabelled.clear();
-  m_pileupRelabelled.clear();
- 
+
+  clear();
+
   m_crossFrame=new CrossingFrame<PCaloHit>(cf.getBunchRange().first,cf.getBunchRange().second,cf.getBunchSpace(),"RELABEL_HCAL",400);
 
   // cf.print(1);
   // m_crossFrame->print(1);
   
-/*std::vector<PCaloHit>::const_iterator ibegin;
-  std::vector<PCaloHit>::const_iterator iend;
-  std::vector<PCaloHit>::const_iterator i;
-  // signal
-  cf.getSignal(ibegin,iend);
-  
-  for (i=ibegin; i!=iend; i++) {
-  DetId newid=relabel(i->id());
-  m_signalRelabelled.push_back(PCaloHit(newid.rawId(),i->energy(),i->time(),i->geantTrackId(),i->energyEM()/i->energy(),i->depth()));
-  }  
-
-  for (int dp=1; dp<=7; ++dp) {
-    for (int eta=1; eta<30; ++eta) {
-      for (int i=0; i<72; ++i) {
-	int iz=1, phi;
-	if (i%2 != 0) iz = -1;
-	phi = i/2;
-	phi = 2*phi + 1;
-	HcalSubdetector sd=HcalBarrel;
-	if (eta > 16 || (eta == 16 && dp > 2)) sd=HcalEndcap;
-	HcalDetId cell = HcalDetId(sd,iz*eta,phi,dp);
-	uint32_t id = cell.denseIndex();
-	HcalDetId newCell = HcalDetId::detIdFromDenseIndex(id);
-//	if (cell() != newCell()) std::cout << cell << " Id " << id << " Convert " << newCell << std::endl;
-      }
-    }
-  }
-*/
   // Begin Change by Wetzel - Commented lines caused errors
   std::vector<const PCaloHit*>::const_iterator ibegin;// = cf.getSignal().begin();
   std::vector<const PCaloHit*>::const_iterator iend;// = cf.getSignal().end();
@@ -74,41 +46,6 @@ void HcalHitRelabeller::process(const CrossingFrame<PCaloHit>& cf) {
   for (std::vector<const PCaloHit*>::const_iterator i = ibegin; 
        i != iend; ++i) {
 
-    /*
-    DetId testId = (*i)->id(); //std::vector<const PCaloHit*>::const_iterator i
-    int det, z, depth, eta, phi, layer;
-    HcalTestNumbering::unpackHcalIndex(testId,det,z,depth,eta,phi,layer);
-
-    std::cout << std::endl 
-	      << "TestNumId ->  det: " << det << " "
-	      << "depth: " << depth << " "
-	      << "ieta: "  << eta << " "
-	      << "iphi: "  << phi << " "
-	      << "layer: " << layer 
-	      << std::endl;
-    */
-    /*    
-    HcalDetId cell((*i)->id()); 
-
-    int iphi, ieta, sub;
-    depth = cell.depth();
-    iphi  = cell.iphi()-1;
-    ieta  = cell.ieta();
-    sub   = cell.subdet();
-    std::cout << "  HcalDetId ->  sub: " << sub << " "
-	      << "depth: " << depth << " "
-	      << "ieta: "  << ieta << " "
-	      << "iphi: "  << iphi << " " 
-	      << std::endl;
-
-
-    const CaloCellGeometry *cellGeometry =
-      theGeometry->getSubdetectorGeometry(cell)->getGeometry(cell);
-    const GlobalPoint& globalposition = cellGeometry->getPosition();
-    
-    std::cout << "PCaloHit position: " << globalposition << std::endl;
-
-    */
       
 
     //std::cout << std::hex << (*i)->id() << std::dec << '\n';
@@ -146,13 +83,16 @@ void HcalHitRelabeller::process(const CrossingFrame<PCaloHit>& cf) {
   // const unsigned int np=cf.getNrPileups();
   // for (unsigned int j=0; j<np; j++) {
   EncodedEventId lastId;
-  int ievent = 0;
+  unsigned int ievent = 0;
+
   for (std::vector<const PCaloHit*>::const_iterator i = ibegin;
        i != iend; ++i) {
     if ((!m_pileupRelabelled[ievent].empty()) && (lastId != (*i)->eventId())) {
       m_crossFrame->addPileups(lastId.bunchCrossing(), &m_pileupRelabelled[ievent], 
 			       lastId.event());
       ++ievent;
+      // hopefully this does not happen too often
+      if ( ievent == m_pileupRelabelled.size() ) m_pileupRelabelled.resize(ievent+1);
     }
     // const PCaloHit& pch=cf.getObject(base+j);
     DetId newid=relabel((*i)->id());
@@ -171,7 +111,8 @@ void HcalHitRelabeller::process(const CrossingFrame<PCaloHit>& cf) {
 
 void HcalHitRelabeller::clear() {
   m_signalRelabelled.clear();
-  m_pileupRelabelled.clear();
+  for ( unsigned int i=0; i< m_pileupRelabelled.size(); i++)
+    m_pileupRelabelled[i].clear();
 }
 
 
