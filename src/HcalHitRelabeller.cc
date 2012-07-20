@@ -28,7 +28,7 @@ void HcalHitRelabeller::process(const CrossingFrame<PCaloHit>& cf) {
   }
 
   clear();
-
+  //std::cout << "range " << cf.getBunchRange().first << " " << cf.getBunchRange().second << std::endl;
   m_crossFrame=new CrossingFrame<PCaloHit>(cf.getBunchRange().first,cf.getBunchRange().second,cf.getBunchSpace(),"RELABEL_HCAL",400);
 
   // cf.print(1);
@@ -88,7 +88,7 @@ void HcalHitRelabeller::process(const CrossingFrame<PCaloHit>& cf) {
   for (std::vector<const PCaloHit*>::const_iterator i = ibegin;
        i != iend; ++i) {
     if ((!m_pileupRelabelled[ievent].empty()) && (lastId != (*i)->eventId())) {
-      m_crossFrame->addPileups(lastId.bunchCrossing(), &m_pileupRelabelled[ievent], 
+      m_crossFrame->addPileupsRelabeller(lastId.bunchCrossing(), &m_pileupRelabelled[ievent], 
 			       lastId.event());
       ++ievent;
       // hopefully this does not happen too often
@@ -104,7 +104,7 @@ void HcalHitRelabeller::process(const CrossingFrame<PCaloHit>& cf) {
     lastId = (*i)->eventId();
   }
   if(!m_pileupRelabelled[ievent].empty()){
-    m_crossFrame->addPileups(lastId.bunchCrossing(), &m_pileupRelabelled[ievent],
+    m_crossFrame->addPileupsRelabeller(lastId.bunchCrossing(), &m_pileupRelabelled[ievent],
                              lastId.event());
   }
 }
